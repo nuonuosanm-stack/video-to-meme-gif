@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Video to Meme GIF</title>
+    <link rel="stylesheet" href="/static/css/app.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <a class="brand" href="/">
+          <span class="brand-mark">GIF</span>
+          <span class="brand-copy">
+            <strong>Video to Meme GIF</strong>
+            <small>local FFmpeg converter</small>
+          </span>
+        </a>
+        <div id="runtimeStatus" class="runtime-status">checking FFmpeg</div>
+      </header>
+
+      <section class="workbench">
+        <section class="stage-panel" aria-label="Video preview">
+          <div class="section-head">
+            <span>01</span>
+            <div>
+              <h1>Clip, crop, compress.</h1>
+              <p>Short video to compact GIF.</p>
+            </div>
+          </div>
+
+          <label id="dropzone" class="dropzone" for="videoFile">
+            <input id="videoFile" type="file" accept="video/mp4,video/webm,video/quicktime" />
+            <span class="drop-icon">+</span>
+            <strong>Choose video</strong>
+            <small id="uploadStatus">MP4, MOV, WebM</small>
+          </label>
+
+          <div class="preview">
+            <video id="videoPreview" controls muted playsinline></video>
+            <div id="cropOverlay" class="crop-overlay" hidden>
+              <div id="cropBox" class="crop-box">
+                <i class="handle nw" data-handle="nw"></i>
+                <i class="handle ne" data-handle="ne"></i>
+                <i class="handle sw" data-handle="sw"></i>
+                <i class="handle se" data-handle="se"></i>
+              </div>
+            </div>
+            <div id="videoEmpty" class="empty-state">
+              <span>preview</span>
+            </div>
+          </div>
+          <div id="videoMeta" class="meta-line">No video loaded</div>
+        </section>
+
+        <section class="controls-panel" aria-label="GIF settings">
+          <div class="section-head compact">
+            <span>02</span>
+            <div>
+              <h2>Settings</h2>
+              <p>Target size: 1MB</p>
+            </div>
+          </div>
+
+          <div class="timeline">
+            <div class="timeline-top">
+              <strong>Start</strong>
+              <span id="timelineLabel">00:00 / 00:00</span>
+            </div>
+            <input id="startRange" type="range" min="0" max="0" step="0.1" value="0" />
+          </div>
+
+          <form id="gifForm" class="settings-form">
+            <label>
+              <span>Start</span>
+              <input id="startTime" name="start_time" type="number" min="0" step="0.1" value="0" />
+            </label>
+            <label>
+              <span>Duration</span>
+              <input id="duration" name="duration" type="number" min="0.5" max="5" step="0.1" value="3" />
+            </label>
+            <label>
+              <span>Width</span>
+              <select id="width" name="width">
+                <option value="240">240px</option>
+                <option value="320" selected>320px</option>
+                <option value="360">360px</option>
+                <option value="480">480px</option>
+                <option value="720">720px</option>
+              </select>
+            </label>
+            <label>
+              <span>FPS</span>
+              <select id="fps" name="fps">
+                <option value="6">6</option>
+                <option value="8" selected>8</option>
+                <option value="10">10</option>
+                <option value="12">12</option>
+                <option value="16">16</option>
+              </select>
+            </label>
+            <label>
+              <span>Speed</span>
+              <select id="speed" name="speed">
+                <option value="0.5">0.5x</option>
+                <option value="1" selected>1x</option>
+                <option value="1.5">1.5x</option>
+                <option value="2">2x</option>
+              </select>
+            </label>
+            <label>
+              <span>Quality</span>
+              <select id="quality" name="quality_mode">
+                <option value="small">small</option>
+                <option value="standard" selected>standard</option>
+                <option value="high">high</option>
+              </select>
+            </label>
+          </form>
+
+          <div class="crop-tools">
+            <div class="segmented" role="group" aria-label="Crop mode">
+              <button id="cropFull" class="active" type="button" data-crop-mode="full">Full</button>
+              <button id="cropSquare" type="button" data-crop-mode="square">Square</button>
+              <button id="cropCustom" type="button" data-crop-mode="custom">Custom</button>
+            </div>
+            <button id="resetCrop" class="ghost-button" type="button">Reset crop</button>
+          </div>
+
+          <button id="createGif" class="primary-action" type="button">
+            <span>Generate GIF</span>
+            <small>auto fallback compression</small>
+          </button>
+        </section>
+
+        <section class="result-panel" aria-label="GIF result">
+          <div class="section-head compact">
+            <span>03</span>
+            <div>
+              <h2>Result</h2>
+              <p id="taskStatus">Waiting</p>
+            </div>
+          </div>
+
+          <div class="progress">
+            <i id="progressBar"></i>
+          </div>
+
+          <div class="gif-preview">
+            <img id="gifPreview" alt="Generated GIF preview" />
+            <div id="gifEmpty" class="empty-state">
+              <span>gif</span>
+            </div>
+          </div>
+
+          <div id="resultMeta" class="result-meta">
+            <span>target 1MB</span>
+            <span>no task</span>
+          </div>
+
+          <a id="downloadGif" class="download-action disabled" href="#" download>Download GIF</a>
+        </section>
+      </section>
+
+      <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    </main>
+    <script src="/static/js/app.js"></script>
+  </body>
+</html>

@@ -4,6 +4,8 @@ A small local web app that turns short video clips into chat-ready GIF stickers.
 It runs through FastAPI and FFmpeg, supports crop, speed, width, FPS, and quality
 settings, then falls back through smaller encodes to target a compact GIF.
 
+![Video to Meme GIF interface](docs/assets/screenshot.png)
+
 ## Features
 
 - Upload MP4, MOV, or WebM videos up to 50MB.
@@ -93,4 +95,3 @@ tests/
 ## License
 
 MIT
-

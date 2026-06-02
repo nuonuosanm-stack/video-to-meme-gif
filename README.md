@@ -1,5 +1,7 @@
 # Video to Meme GIF
 
+[![tests](https://github.com/nuonuosanm-stack/video-to-meme-gif/actions/workflows/tests.yml/badge.svg)](https://github.com/nuonuosanm-stack/video-to-meme-gif/actions/workflows/tests.yml)
+
 A small local web app that turns short video clips into chat-ready GIF stickers.
 It runs through FastAPI and FFmpeg, supports crop, speed, width, FPS, and quality
 settings, then falls back through smaller encodes to target a compact GIF.
@@ -47,6 +49,21 @@ Open:
 http://127.0.0.1:8503
 ```
 
+## Docker
+
+Build and run locally:
+
+```bash
+docker build -t video-to-meme-gif .
+docker run --rm -p 8503:8503 video-to-meme-gif
+```
+
+Then open:
+
+```text
+http://127.0.0.1:8503
+```
+
 ## API
 
 ```http
@@ -77,6 +94,33 @@ GET /outputs/{filename}
 pytest tests -q
 ```
 
+The repository also includes a GitHub Actions workflow at
+`.github/workflows/tests.yml` that runs the test suite on pushes and pull requests.
+
+## Troubleshooting
+
+### FFmpeg is missing
+
+Run:
+
+```bash
+ffmpeg -version
+ffprobe -version
+```
+
+If either command is missing, install FFmpeg and restart the app.
+
+### GIF output is too large
+
+Try a shorter duration, lower width, lower FPS, or `small` quality mode. The app
+automatically retries smaller settings, but complex video clips may still exceed
+the target size.
+
+### Upload is rejected
+
+The first release accepts MP4, MOV, and WebM files up to 50MB. Source videos are
+limited to 180 seconds, and each GIF clip is limited to 5 seconds.
+
 ## Project Layout
 
 ```text
@@ -91,6 +135,12 @@ static/
   js/app.js
 tests/
 ```
+
+## Contributing and Security
+
+- See [CONTRIBUTING.md](CONTRIBUTING.md) for local development and pull request guidance.
+- See [SECURITY.md](SECURITY.md) for vulnerability reporting and security scope.
+- See [CHANGELOG.md](CHANGELOG.md) for release history.
 
 ## License
 
